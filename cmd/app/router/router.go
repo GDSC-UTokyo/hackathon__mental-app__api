@@ -1,0 +1,37 @@
+package router
+
+import (
+	"github.com/gin-contrib/cors"
+	"github.com/gin-gonic/gin"
+)
+
+func Router() {
+	g := gin.Default()
+
+	corsConfig := cors.Config{
+		AllowOrigins: []string{
+			"*",
+		},
+		AllowMethods: []string{
+			"GET",
+			"POST",
+			"PUT",
+			"DELETE",
+		},
+		AllowHeaders: []string{
+			"Access-Control-Allow-Headers",
+			"Content-Type",
+			"Content-Length",
+			"Accept-Encoding",
+			"X-CSRF-Token",
+			"Authorization",
+			"authentication",
+			"workspace_id",
+		},
+	}
+	g.Use(cors.New(corsConfig))
+
+	//g.POST("/signup", controller.Signup)みたいな感じで並べていく
+
+	g.Run(":8080")
+}

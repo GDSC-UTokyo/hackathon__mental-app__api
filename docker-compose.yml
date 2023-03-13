@@ -1,0 +1,29 @@
+version: "3.9"
+services:
+  db:
+    image: mysql:8.0
+    container_name: db
+    environment:
+      MYSQL_DATABASE: mental-app
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: password
+      TZ: 'Asia/Tokyo'
+    ports:
+      - 3307:3307
+  
+  app:
+    build: ./cmd
+    container_name: app
+    environment:
+      MYSQL_DATABASE: mental-app
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+      MYSQL_HOST: db
+    depends_on:
+      - db
+    volumes:
+      - ./cmd:/go/src/app
+    tty: true
+    ports:
+      - 8080:8080
