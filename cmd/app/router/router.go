@@ -1,6 +1,7 @@
 package router
 
 import (
+	"cmd/app/controller"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
@@ -32,6 +33,7 @@ func Router() {
 	g.Use(cors.New(corsConfig))
 
 	//g.POST("/signup", controller.Signup)みたいな感じで並べていく
+	g.GET("/reasons", controller.FetchAllReasons)
 
 	g.Run(":8080")
 }
