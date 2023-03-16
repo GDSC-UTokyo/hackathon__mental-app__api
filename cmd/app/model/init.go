@@ -29,5 +29,36 @@ func init() {
 		log.Fatalf("fail: sql.Open, %v\n", err)
 	}
 
-	//下でマイグレーション
+	if err := db.AutoMigrate(&User{}); err != nil {
+		log.Fatalf("fail: db.AutoMigrate, %v\n", err)
+	}
+	if err := db.AutoMigrate(&Reason{}); err != nil {
+		log.Fatalf("fail: db.AutoMigrate, %v\n", err)
+	}
+	if err := db.AutoMigrate(&MentalPoint{}); err != nil {
+		log.Fatalf("fail: db.AutoMigrate, %v\n", err)
+	}
+	if err := db.AutoMigrate(&ReasonsOnMentalPoints{}); err != nil {
+		log.Fatalf("fail: db.AutoMigrate, %v\n", err)
+	}
+
+	if err := db.Create(
+		&Users{
+			{Id: "1", Name: "A", Email: "a@gmail.com", UId: "1"},
+			{Id: "2", Name: "B", Email: "b@gmail.com", UId: "2"},
+			{Id: "3", Name: "C", Email: "c@gmail.com", UId: "3"},
+		},
+	); err != nil {
+		log.Fatalf("fail: db.AutoMigrate, %v\n", err)
+	}
+
+	if err := db.Create(
+		&Reasons{
+			{Id: "1", Reason: "A", UserId: "1"},
+			{Id: "2", Reason: "B", UserId: "1"},
+			{Id: "3", Reason: "C", UserId: "1"},
+		},
+	); err != nil {
+		log.Fatalf("fail: db.AutoMigrate, %v\n", err)
+	}
 }
