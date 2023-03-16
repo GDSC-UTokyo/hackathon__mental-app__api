@@ -34,6 +34,7 @@ func Router() {
 
 	//g.POST("/signup", controller.Signup)みたいな感じで並べていく
 	g.GET("/reasons", controller.FetchAllReasons)
+	g.POST("/reasons", controller.CreateReason)
 
 	g.Run(":8080")
 }

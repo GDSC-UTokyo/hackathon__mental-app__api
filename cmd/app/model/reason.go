@@ -19,3 +19,7 @@ type Reasons []Reason
 func (p *Reasons) GetReasonsByUserId(userId string) (tx *gorm.DB) {
 	return db.Where("user_id=", userId).Find(&p)
 }
+
+func (p *Reason) CreateReason() (tx *gorm.DB) {
+	return db.Create(&p)
+}
