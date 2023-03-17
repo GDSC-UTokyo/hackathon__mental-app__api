@@ -10,7 +10,7 @@ mysql.server start
 mysql -u (ユーザー名) -p(パスワード)
 ```
 
-3.mysqlのrootユーザーを作成し、パスワードをrootに変更する。権限も付与する。
+3.mysqlのrootユーザーを作成し、パスワードをrootに変更する。
 ```
 CREATE USER 'root'@'localhost' IDENTIFIED BY 'root';
 ```
