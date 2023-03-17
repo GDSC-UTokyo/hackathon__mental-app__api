@@ -16,3 +16,7 @@ type User struct {
 }
 
 type Users []User
+
+func (p *Users) CreateUsers() (tx *gorm.DB) {
+	return db.Create(&p)
+}

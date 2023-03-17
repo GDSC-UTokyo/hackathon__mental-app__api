@@ -23,3 +23,7 @@ func (p *Reasons) GetReasonsByUserId(userId string) (tx *gorm.DB) {
 func (p *Reason) CreateReason() (tx *gorm.DB) {
 	return db.Create(&p)
 }
+
+func (p *Reasons) CreateReasons() (tx *gorm.DB) {
+	return db.Create(&p)
+}

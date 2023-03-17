@@ -17,7 +17,7 @@ func init() {
 	mysqlHost := os.Getenv("MYSQL_HOST")
 	mysqlDatabase := os.Getenv("MYSQL_DATABASE")
 
-	dsn := fmt.Sprintf("%s:%s@tcp(%s)/%s?parseTime=true", mysqlUser, mysqlPwd, mysqlHost, mysqlDatabase)
+	dsn := fmt.Sprintf("%s:%s@(%s)/%s?parseTime=true", mysqlUser, mysqlPwd, mysqlHost, mysqlDatabase)
 
 	time.Sleep(time.Second * 5)
 
@@ -42,23 +42,23 @@ func init() {
 		log.Fatalf("fail: db.AutoMigrate, %v\n", err)
 	}
 
-	if err := db.Create(
-		&Users{
-			{Id: "1", Name: "A", Email: "a@gmail.com", UId: "1"},
-			{Id: "2", Name: "B", Email: "b@gmail.com", UId: "2"},
-			{Id: "3", Name: "C", Email: "c@gmail.com", UId: "3"},
-		},
-	); err != nil {
-		log.Fatalf("fail: db.AutoMigrate, %v\n", err)
+	sampleUsers := Users{
+		{Id: "1", Name: "A", Email: "a@gmail.com", UId: "1"},
+		{Id: "2", Name: "B", Email: "b@gmail.com", UId: "2"},
+		{Id: "3", Name: "C", Email: "c@gmail.com", UId: "3"},
 	}
 
-	if err := db.Create(
-		&Reasons{
-			{Id: "1", Reason: "A", UserId: "1"},
-			{Id: "2", Reason: "B", UserId: "1"},
-			{Id: "3", Reason: "C", UserId: "1"},
-		},
-	); err != nil {
-		log.Fatalf("fail: db.AutoMigrate, %v\n", err)
+	if err := sampleUsers.CreateUsers(); err != nil {
+		log.Fatalf("fail: db.Create Users, %v\n", err)
+	}
+
+	sampleReasons := Reasons{
+		{Id: "1", Reason: "A", UserId: "1"},
+		{Id: "2", Reason: "B", UserId: "1"},
+		{Id: "3", Reason: "C", UserId: "1"},
+	}
+
+	if err := sampleReasons.CreateReasons(); err != nil {
+		log.Fatalf("fail: db.Create Reasons, %v\n", err)
 	}
 }
