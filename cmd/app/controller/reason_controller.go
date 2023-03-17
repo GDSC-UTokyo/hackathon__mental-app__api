@@ -2,6 +2,7 @@ package controller
 
 import (
 	"cmd/app/model"
+	"cmd/app/utils"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -50,7 +51,9 @@ func CreateReason(c *gin.Context) {
 		return
 	}
 
+	reasonId := utils.GenerateId()
 	newReason := model.Reason{
+		Id:     reasonId,
 		Reason: req.Reason,
 		UserId: userId,
 	}

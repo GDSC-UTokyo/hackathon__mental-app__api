@@ -48,9 +48,7 @@ func init() {
 		{Id: "3", Name: "C", Email: "c@gmail.com", UId: "3"},
 	}
 
-	if err := sampleUsers.CreateUsers(); err != nil {
-		log.Fatalf("fail: db.Create Users, %v\n", err)
-	}
+	sampleUsers.CreateUsers()
 
 	sampleReasons := Reasons{
 		{Id: "1", Reason: "A", UserId: "1"},
@@ -58,7 +56,5 @@ func init() {
 		{Id: "3", Reason: "C", UserId: "1"},
 	}
 
-	if err := sampleReasons.CreateReasons(); err != nil {
-		log.Fatalf("fail: db.Create Reasons, %v\n", err)
-	}
+	sampleReasons.CreateReasons()
 }

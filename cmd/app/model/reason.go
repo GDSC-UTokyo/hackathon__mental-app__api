@@ -7,8 +7,8 @@ import (
 
 type Reason struct {
 	Id        string         `json:"id" gorm:"primaryKey"`
-	Reason    string         `json:"reason" gorm:"unique;not null"`
-	UserId    string         `json:"user_id" gorm:"unique;not null"`
+	Reason    string         `json:"reason" gorm:"not null"`
+	UserId    string         `json:"user_id" gorm:"not null"`
 	CreatedAt time.Time      `json:"created_at"`
 	UpdatedAt time.Time      `json:"updated_at"`
 	DeletedAt gorm.DeletedAt `json:"deleted_at"`
@@ -17,7 +17,7 @@ type Reason struct {
 type Reasons []Reason
 
 func (p *Reasons) GetReasonsByUserId(userId string) (tx *gorm.DB) {
-	return db.Where("user_id=", userId).Find(&p)
+	return db.Where("user_id", userId).Find(&p)
 }
 
 func (p *Reason) CreateReason() (tx *gorm.DB) {
