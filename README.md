@@ -21,3 +21,6 @@ CREATE DATABASE `mental-app`;
 ```
 
 5.Goサーバーを以下のコマンドで起動する。
+```
+docker compose up -d
+```
