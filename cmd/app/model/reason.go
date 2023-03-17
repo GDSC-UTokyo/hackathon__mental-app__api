@@ -1,14 +1,15 @@
 package model
 
 import (
-	"gorm.io/gorm"
 	"time"
+
+	"gorm.io/gorm"
 )
 
 type Reason struct {
 	Id        string         `json:"id" gorm:"primaryKey"`
-	Reason    string         `json:"reason" gorm:"not null"`
-	UserId    string         `json:"user_id" gorm:"not null"`
+	Reason    string         `json:"reason" gorm:"not null;size:255" `
+	UserId    string         `json:"user_id" gorm:"not null;size:255"`
 	CreatedAt time.Time      `json:"created_at"`
 	UpdatedAt time.Time      `json:"updated_at"`
 	DeletedAt gorm.DeletedAt `json:"deleted_at"`
