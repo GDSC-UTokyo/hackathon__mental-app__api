@@ -1,27 +1,28 @@
 version: "3.9"
 services:
-  db:
-    image: mysql:8.0
-    container_name: db
-    environment:
-      MYSQL_DATABASE: mental-app
-      MYSQL_USER: user
-      MYSQL_PASSWORD: password
-      MYSQL_ROOT_PASSWORD: password
-      TZ: 'Asia/Tokyo'
-    ports:
-      - 3307:3307
+  # db:
+  #   image: mysql:8.0
+  #   container_name: godockerDB
+  #   environment:
+  #     MYSQL_DATABASE: mental-app
+  #     MYSQL_USER: user
+  #     MYSQL_PASSWORD: password
+  #     MYSQL_ROOT_PASSWORD: password
+  #     TZ: 'Asia/Tokyo'
+  #   ports:
+  #     - 3306:3306
+  #     - 33060:33060
   
   app:
     build: ./cmd
     container_name: app
     environment:
       MYSQL_DATABASE: mental-app
-      MYSQL_USER: user
-      MYSQL_PASSWORD: password
-      MYSQL_HOST: db
-    depends_on:
-      - db
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+      MYSQL_HOST: host.docker.internal:3306
+    # depends_on:
+    #   - db
     volumes:
       - ./cmd:/go/src/app
     tty: true
