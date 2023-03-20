@@ -2,8 +2,9 @@ package controller
 
 import (
 	"cmd/app/model"
-	"github.com/gin-gonic/gin"
 	"net/http"
+
+	"github.com/gin-gonic/gin"
 )
 
 type FetchAllReasonsRes struct {
