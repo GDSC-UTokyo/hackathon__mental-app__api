@@ -8,7 +8,7 @@ import (
 )
 
 type CreateReasonReq struct {
-	Reason string `json:"reason"`
+	Reason string `json:"reason" binding:"required"`
 }
 
 type CreateReasonRes struct {

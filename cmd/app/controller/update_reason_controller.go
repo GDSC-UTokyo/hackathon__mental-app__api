@@ -8,7 +8,7 @@ import (
 )
 
 type UpdateReasonReq struct {
-	Reason string `json:"reason"`
+	Reason string `json:"reason" binding:"required"`
 }
 
 type UpdateReasonRes struct {
@@ -26,8 +26,12 @@ func UpdateReason(c *gin.Context) {
 		return
 	}
 
-	var originalReason model.Reason
-	originalReason.GetReasonByReasonId(reasonId)
+	originalReason := model.Reason{}
+	if err := originalReason.GetReasonByReasonId(reasonId).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"message": "reason not found"})
+		return
+	}
+
 	if userId != originalReason.UserId {
 		c.JSON(http.StatusForbidden, gin.H{"message": "not permitted"})
 		return
