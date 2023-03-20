@@ -28,3 +28,7 @@ func (p *Reason) CreateReason() (tx *gorm.DB) {
 func (p *Reasons) CreateReasons() (tx *gorm.DB) {
 	return db.Create(&p)
 }
+
+func (p *Reason) UpdateReason() (tx *gorm.DB) {
+	return db.Model(&p).Update("reason", p.Reason)
+}
