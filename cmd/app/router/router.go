@@ -37,6 +37,7 @@ func Router() {
 	g.GET("/reasons", controller.FetchAllReasons)
 	g.POST("/reasons", controller.CreateReason)
 	g.PUT("/reasons/:reasonId", controller.UpdateReason)
+	g.DELETE("/reasons/:reasonId", controller.DeleteReason)
 
 	g.Run(":8080")
 }
