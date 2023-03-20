@@ -18,6 +18,7 @@ type UpdateReasonRes struct {
 
 func UpdateReason(c *gin.Context) {
 	reasonId := c.Param("reasonId")
+	userId := c.Request.Header.Get("UserId")
 
 	req := new(UpdateReasonReq)
 	if err := c.Bind(&req); err != nil {
@@ -25,9 +26,17 @@ func UpdateReason(c *gin.Context) {
 		return
 	}
 
+	var originalReason model.Reason
+	originalReason.GetReasonByReasonId(reasonId)
+	if userId != originalReason.UserId {
+		c.JSON(http.StatusForbidden, gin.H{"message": "not permitted"})
+		return
+	}
+
 	renewReason := model.Reason{
 		Id:     reasonId,
 		Reason: req.Reason,
+		UserId: userId,
 	}
 
 	if err := renewReason.UpdateReason().Error; err != nil {
