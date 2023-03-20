@@ -7,10 +7,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type DeleteReasonReq struct {
-	Reason string `json:"reason" binding:"required"`
-}
-
 type DeleteReasonRes struct {
 	Message string `json:"message"`
 }
@@ -18,12 +14,6 @@ type DeleteReasonRes struct {
 func DeleteReason(c *gin.Context) {
 	reasonId := c.Param("reasonId")
 	userId := c.Request.Header.Get("UserId")
-
-	req := new(DeleteReasonReq)
-	if err := c.Bind(&req); err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
-	}
 
 	originalReason := model.Reason{}
 	if err := originalReason.GetReasonByReasonId(reasonId).Error; err != nil {
@@ -36,14 +26,8 @@ func DeleteReason(c *gin.Context) {
 		return
 	}
 
-	if req.Reason != originalReason.Reason {
-		c.JSON(http.StatusForbidden, gin.H{"message": "not correspond"})
-		return
-	}
-
 	renewReason := model.Reason{
 		Id:     reasonId,
-		Reason: req.Reason,
 		UserId: userId,
 	}
 
