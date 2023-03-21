@@ -41,6 +41,7 @@ func Router() {
 
 	g.POST("/reports", controller.CreateReport)
 	g.PUT("/reports/:mentalPointId", controller.UpdateReport)
+	g.GET("/reports/:mentalPointId", controller.FetchDayReport)
 
 	g.Run(":8080")
 }
