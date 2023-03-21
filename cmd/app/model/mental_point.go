@@ -19,3 +19,11 @@ type MentalPoint struct {
 func (p *MentalPoint) RegisterPoint() (tx *gorm.DB) {
 	return db.Create(&p)
 }
+
+func (p *MentalPoint) GetReportByMentalPointId(mentalPointId string) (tx *gorm.DB) {
+	return db.Where("id", mentalPointId).Find(&p)
+}
+
+func (p *MentalPoint) UpdateMentalPoint() (tx *gorm.DB) {
+	return db.Model(&p).Update("point", p.Point)
+}

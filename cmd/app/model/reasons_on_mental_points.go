@@ -18,3 +18,11 @@ type ReasonsOnMentalPoints struct {
 func (p *ReasonsOnMentalPoints) RegisterReasonsOnMentalPoint() (tx *gorm.DB) {
 	return db.Create(&p)
 }
+
+func (p *ReasonsOnMentalPoints) GetReportByMentalPointId(mentalPointId string) (tx *gorm.DB) {
+	return db.Where("mental_point_id", mentalPointId).Find(&p)
+}
+
+func (p *ReasonsOnMentalPoints) UpdateReasonsOnMentalPoint() (tx *gorm.DB) {
+	return db.Model(&p).Update("reason_id", p.ReasonId)
+}
