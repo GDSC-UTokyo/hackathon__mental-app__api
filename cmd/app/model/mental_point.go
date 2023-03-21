@@ -1,8 +1,9 @@
 package model
 
 import (
-	"gorm.io/gorm"
 	"time"
+
+	"gorm.io/gorm"
 )
 
 type MentalPoint struct {
@@ -13,4 +14,8 @@ type MentalPoint struct {
 	CreatedAt   time.Time      `json:"created_at"`
 	UpdatedAt   time.Time      `json:"updated_at"`
 	DeletedAt   gorm.DeletedAt `json:"deleted_at"`
+}
+
+func (p *MentalPoint) RegisterPoint() (tx *gorm.DB) {
+	return db.Create(&p)
 }

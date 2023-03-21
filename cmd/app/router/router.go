@@ -39,5 +39,6 @@ func Router() {
 	g.PUT("/reasons/:reasonId", controller.UpdateReason)
 	g.DELETE("/reasons/:reasonId", controller.DeleteReason)
 
+	g.POST("/reports", controller.CreateReport)
 	g.Run(":8080")
 }
