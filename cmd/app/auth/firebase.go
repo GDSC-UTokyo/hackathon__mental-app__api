@@ -6,6 +6,7 @@ import (
 	"firebase.google.com/go/v4/auth"
 	"google.golang.org/api/option"
 	"log"
+	"os"
 )
 
 type FirebaseApp struct {
@@ -24,7 +25,8 @@ func init() {
 
 func InitFirebaseApp() (*FirebaseApp, error) {
 	ctx := context.Background()
-	opt := option.WithCredentialsFile("path/to/serviceAccountKey.json")
+	opt := option.WithCredentialsJSON([]byte(os.Getenv("GOOGLE_CREDENTIALS_JSON")))
+	//opt := option.WithCredentialsFile("/path/to/serviceAccountKey.json")
 
 	app, err := firebase.NewApp(ctx, nil, opt)
 	if err != nil {

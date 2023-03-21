@@ -1,6 +1,7 @@
 package router
 
 import (
+	"cmd/app/auth"
 	"cmd/app/controller"
 
 	"github.com/gin-contrib/cors"
@@ -32,6 +33,7 @@ func Router() {
 		},
 	}
 	g.Use(cors.New(corsConfig))
+	g.Use(auth.Middleware())
 
 	//g.POST("/signup", controller.Signup)みたいな感じで並べていく
 	g.GET("/reasons", controller.FetchAllReasons)

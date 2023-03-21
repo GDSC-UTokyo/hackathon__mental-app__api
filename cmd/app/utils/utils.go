@@ -1,10 +1,10 @@
 package utils
 
 import (
-	"crypto/sha256"
-	"encoding/hex"
+	"github.com/gin-gonic/gin"
 	"github.com/oklog/ulid/v2"
 	"math/rand"
+	"net/http"
 	"time"
 )
 
@@ -15,7 +15,10 @@ func GenerateId() string {
 	return id.String()
 }
 
-func Hash(token string) string {
-	bytes := sha256.Sum256([]byte(token))
-	return hex.EncodeToString(bytes[:])
+func GetValueFromContext(c *gin.Context, key string) (valueString string) {
+	value, exists := c.Get(key)
+	if !exists {
+		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "cant get value from gin.Context"})
+	}
+	return value.(string)
 }

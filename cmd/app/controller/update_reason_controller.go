@@ -2,6 +2,7 @@ package controller
 
 import (
 	"cmd/app/model"
+	"cmd/app/utils"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -18,7 +19,7 @@ type UpdateReasonRes struct {
 
 func UpdateReason(c *gin.Context) {
 	reasonId := c.Param("reasonId")
-	userId := c.Request.Header.Get("UserId")
+	userId := utils.GetValueFromContext(c, "userId")
 
 	req := new(UpdateReasonReq)
 	if err := c.Bind(&req); err != nil {
