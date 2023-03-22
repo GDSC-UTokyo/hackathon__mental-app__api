@@ -16,12 +16,18 @@ type MentalPoint struct {
 	DeletedAt   gorm.DeletedAt `json:"deleted_at"`
 }
 
+type MentalPoints []MentalPoint
+
 func (p *MentalPoint) RegisterPoint() (tx *gorm.DB) {
 	return db.Create(&p)
 }
 
 func (p *MentalPoint) GetReportByMentalPointId(mentalPointId string) (tx *gorm.DB) {
 	return db.Where("id", mentalPointId).Find(&p)
+}
+
+func (p *MentalPoints) GetReportsByDate(userId string, startDate string, endDateNext string) (tx *gorm.DB) {
+	return db.Where("user_id", userId).Where("created_date >= ?", startDate).Where("created_date < ?", endDateNext).Order("created_date asc").Find(&p)
 }
 
 func (p *MentalPoint) UpdateMentalPoint() (tx *gorm.DB) {
