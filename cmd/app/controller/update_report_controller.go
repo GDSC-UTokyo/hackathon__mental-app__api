@@ -2,20 +2,21 @@ package controller
 
 import (
 	"cmd/app/model"
+	"cmd/app/utils"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
 
 type UpdateReportReq struct {
-	Point   int    `json:"point"`
-	Reasons string `json:"reasonIdList" binding:"required"`
+	Point   int      `json:"point"`
+	Reasons []string `json:"reasonIdList" binding:"required"`
 }
 
 type UpdateReportRes struct {
-	Id      string `json:"mentalPointId"`
-	Point   int    `json:"point"`
-	Reasons string `json:"reasonIdList" binding:"required"`
+	Id      string   `json:"mentalPointId"`
+	Point   int      `json:"point"`
+	Reasons []string `json:"reasonIdList"`
 }
 
 func UpdateReport(c *gin.Context) {
@@ -50,18 +51,28 @@ func UpdateReport(c *gin.Context) {
 		return
 	}
 
-	originalReasonsOnMentalPoint := model.ReasonsOnMentalPoints{}
-	if err := originalReasonsOnMentalPoint.GetReportByMentalPointId(mentalPointId).Error; err != nil {
+	if err := model.DeleteReportsByPointIdAndReasonId(mentalPointId, req.Reasons).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"message": "report not found"})
 		return
 	}
 
-	renewReasonsOnMentalPoint := model.ReasonsOnMentalPoints{
-		ReasonId:      req.Reasons,
-		MentalPointId: mentalPointId,
+	renewReasonsOnMentalPoint := make(model.ROMPs, 0)
+	for i := 0; i < len(req.Reasons); i++ {
+		reasonOnPointId := utils.GenerateId()
+		renewReasonsOnMentalPoint = append(renewReasonsOnMentalPoint, model.ReasonsOnMentalPoints{
+			Id:            reasonOnPointId,
+			ReasonId:      req.Reasons[i],
+			MentalPointId: mentalPointId,
+		})
 	}
 
-	if err := renewReasonsOnMentalPoint.UpdateReasonsOnMentalPoint().Error; err != nil {
+	if err := renewReasonsOnMentalPoint.RegisterReasonsOnMentalPoints().Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	updatedReasonIdList := make(model.ReasonIdList, 0)
+	if err := updatedReasonIdList.GetReasonIdsByMentalPointId(renewReport.Id).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
@@ -69,7 +80,7 @@ func UpdateReport(c *gin.Context) {
 	res := &UpdateReportRes{
 		Id:      mentalPointId,
 		Point:   renewReport.Point,
-		Reasons: renewReasonsOnMentalPoint.ReasonId,
+		Reasons: updatedReasonIdList,
 	}
 
 	c.JSON(http.StatusOK, res)

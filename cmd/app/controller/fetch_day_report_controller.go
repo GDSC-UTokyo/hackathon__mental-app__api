@@ -8,10 +8,10 @@ import (
 )
 
 type FetchDayReportRes struct {
-	Id      string `json:"mentalPointId"`
-	Date    string `json:"createDate"`
-	Point   int    `json:"point"`
-	Reasons string `json:"reasonIdList"`
+	Id      string   `json:"mentalPointId"`
+	Date    string   `json:"createDate"`
+	Point   int      `json:"point"`
+	Reasons []string `json:"reasonIdList"`
 }
 
 func FetchDayReport(c *gin.Context) {
@@ -29,8 +29,8 @@ func FetchDayReport(c *gin.Context) {
 		return
 	}
 
-	targetReasons := model.ReasonsOnMentalPoints{}
-	if err := targetReasons.GetReportByMentalPointId(mentalPointId).Error; err != nil {
+	targetReasons := make(model.ReasonIdList, 0)
+	if err := targetReasons.GetReasonIdsByMentalPointId(mentalPointId).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
@@ -39,7 +39,7 @@ func FetchDayReport(c *gin.Context) {
 		Id:      mentalPointId,
 		Date:    targetReport.CreatedDate,
 		Point:   targetReport.Point,
-		Reasons: targetReasons.ReasonId,
+		Reasons: targetReasons,
 	}
 
 	c.JSON(http.StatusOK, res)
