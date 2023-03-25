@@ -42,7 +42,7 @@ func Router() {
 	g.POST("/reports", controller.CreateReport)
 	g.PUT("/reports/:mentalPointId", controller.UpdateReport)
 	g.GET("/reports/:mentalPointId", controller.FetchDayReport)
-	g.GET("/reports/", controller.FetchPeriodReports)
+	g.POST("/reports/graphs", controller.FetchPeriodReports)
 
 	g.Run(":8080")
 }

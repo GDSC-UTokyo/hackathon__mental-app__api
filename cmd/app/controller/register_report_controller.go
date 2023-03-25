@@ -9,7 +9,7 @@ import (
 )
 
 type CreateReportReq struct {
-	Date    string   `json:"createdDate" binding:"required"`
+	Date    string   `json:"createdDate" binding:"unique;required"`
 	Point   int      `json:"point" binding:"required"`
 	Reasons []string `json:"reasonIdList" binding:"required"`
 }
@@ -26,6 +26,11 @@ func CreateReport(c *gin.Context) {
 	req := new(CreateReportReq)
 	if err := c.Bind(&req); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	if req.Point < 0 || req.Point > 100 {
+		c.JSON(http.StatusBadRequest, gin.H{"message": "out of range"})
 		return
 	}
 

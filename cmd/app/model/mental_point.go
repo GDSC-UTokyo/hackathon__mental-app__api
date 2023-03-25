@@ -30,6 +30,14 @@ func (p *MentalPoints) GetReportsByDate(userId string, startDate string, endDate
 	return db.Where("user_id", userId).Where("created_date >= ?", startDate).Where("created_date < ?", endDateNext).Order("created_date asc").Find(&p)
 }
 
+func (p *MentalPoints) GetReportsByCount(userId string, count int) (tx *gorm.DB) {
+	return db.Where("user_id", userId).Order("created_date asc").Limit(count).Find(&p)
+}
+
+func (p *MentalPoints) GetReportsByDateAndCount(userId string, startDate string, endDateNext string, count int) (tx *gorm.DB) {
+	return db.Where("user_id", userId).Where("created_date >= ?", startDate).Where("created_date < ?", endDateNext).Order("created_date asc").Limit(count).Find(&p)
+}
+
 func (p *MentalPoint) UpdateMentalPoint() (tx *gorm.DB) {
 	return db.Model(&p).Update("point", p.Point)
 }

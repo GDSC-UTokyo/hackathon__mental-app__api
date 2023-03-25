@@ -29,6 +29,11 @@ func UpdateReport(c *gin.Context) {
 		return
 	}
 
+	if req.Point < 0 || req.Point > 100 {
+		c.JSON(http.StatusBadRequest, gin.H{"message": "out of range"})
+		return
+	}
+
 	originalReport := model.MentalPoint{}
 	if err := originalReport.GetReportByMentalPointId(mentalPointId).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"message": "report not found"})

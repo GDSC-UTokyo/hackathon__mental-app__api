@@ -40,5 +40,5 @@ func (p *ReasonsOnMentalPoints) UpdateReasonsOnMentalPoint() (tx *gorm.DB) {
 }
 
 func DeleteReportsByPointIdAndReasonId(mentalPointId string, reasonIdList []string) (tx *gorm.DB) {
-	return db.Where("mental_point_id", mentalPointId).Where("reason_id IN (?)", reasonIdList)
+	return db.Where("mental_point_id", mentalPointId).Where("reason_id IN (?)", reasonIdList).Delete(&ReasonsOnMentalPoints{})
 }
