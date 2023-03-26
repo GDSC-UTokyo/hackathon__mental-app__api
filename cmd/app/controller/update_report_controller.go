@@ -9,8 +9,8 @@ import (
 )
 
 type UpdateReportReq struct {
-	Point   int      `json:"point"`
-	Reasons []string `json:"reasonIdList" binding:"required"`
+	Point   int      `json:"point" binding:"required"`
+	Reasons []string `json:"reasonIdList"`
 }
 
 type UpdateReportRes struct {
@@ -45,15 +45,17 @@ func UpdateReport(c *gin.Context) {
 		return
 	}
 
-	renewReport := model.MentalPoint{
-		Id:     mentalPointId,
-		Point:  req.Point,
-		UserId: userId,
-	}
+	if originalReport.Point != req.Point {
+		renewReport := model.MentalPoint{
+			Id:     mentalPointId,
+			Point:  req.Point,
+			UserId: userId,
+		}
 
-	if err := renewReport.UpdateMentalPoint().Error; err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
+		if err := renewReport.UpdateMentalPoint().Error; err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
 	}
 
 	if err := model.DeleteReportsByPointIdAndReasonId(mentalPointId, req.Reasons).Error; err != nil {
@@ -76,16 +78,10 @@ func UpdateReport(c *gin.Context) {
 		return
 	}
 
-	updatedReasonIdList := make(model.ReasonIdList, 0)
-	if err := updatedReasonIdList.GetReasonIdsByMentalPointId(renewReport.Id).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
-	}
-
 	res := &UpdateReportRes{
 		Id:      mentalPointId,
-		Point:   renewReport.Point,
-		Reasons: updatedReasonIdList,
+		Point:   req.Point,
+		Reasons: req.Reasons,
 	}
 
 	c.JSON(http.StatusOK, res)

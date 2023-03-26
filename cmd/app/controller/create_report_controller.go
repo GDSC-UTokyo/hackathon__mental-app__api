@@ -9,9 +9,9 @@ import (
 )
 
 type CreateReportReq struct {
-	Date    string   `json:"createdDate" binding:"unique;required"`
+	Date    string   `json:"createdDate" binding:"required"`
 	Point   int      `json:"point" binding:"required"`
-	Reasons []string `json:"reasonIdList" binding:"required"`
+	Reasons []string `json:"reasonIdList"`
 }
 
 type CreateReportRes struct {
