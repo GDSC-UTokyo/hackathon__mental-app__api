@@ -21,7 +21,7 @@ type CreateReportRes struct {
 }
 
 func CreateReport(c *gin.Context) {
-	userId := c.Request.Header.Get("UserId")
+	userId := utils.GetValueFromContext(c, "userId")
 
 	req := new(CreateReportReq)
 	if err := c.Bind(&req); err != nil {
@@ -31,6 +31,13 @@ func CreateReport(c *gin.Context) {
 
 	if req.Point < 0 || req.Point > 100 {
 		c.JSON(http.StatusBadRequest, gin.H{"message": "out of range"})
+		return
+	}
+
+	originalMentalPoint := model.MentalPoint{}
+	originalMentalPoint.GetReportByUserIdAndDate(userId, req.Date)
+	if originalMentalPoint.Id != "" {
+		c.JSON(http.StatusBadRequest, gin.H{"message": "date duplicated"})
 		return
 	}
 
@@ -62,16 +69,10 @@ func CreateReport(c *gin.Context) {
 		return
 	}
 
-	registeredReasonIdList := make(model.ReasonIdList, 0)
-	if err := registeredReasonIdList.GetReasonIdsByMentalPointId(newReasonsOnMentalPoints[0].MentalPointId).Error; err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
-	}
-
 	res := &CreateReportRes{
 		Id:      newMentalPoint.Id,
 		Point:   newMentalPoint.Point,
-		Reasons: registeredReasonIdList,
+		Reasons: req.Reasons,
 	}
 
 	c.JSON(http.StatusOK, res)

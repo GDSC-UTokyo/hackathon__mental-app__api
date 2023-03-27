@@ -41,3 +41,7 @@ func (p *MentalPoints) GetReportsByDateAndCount(userId string, startDate string,
 func (p *MentalPoint) UpdateMentalPoint() (tx *gorm.DB) {
 	return db.Model(&p).Update("point", p.Point)
 }
+
+func (p *MentalPoint) GetReportByUserIdAndDate(userId string, createdDate string) (tx *gorm.DB) {
+	return db.Where("user_id", userId).Where("created_date", createdDate).Find(&p)
+}

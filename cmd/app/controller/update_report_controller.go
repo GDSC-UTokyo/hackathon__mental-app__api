@@ -21,7 +21,7 @@ type UpdateReportRes struct {
 
 func UpdateReport(c *gin.Context) {
 	mentalPointId := c.Param("mentalPointId")
-	userId := c.Request.Header.Get("UserId")
+	userId := utils.GetValueFromContext(c, "userId")
 
 	req := new(UpdateReportReq)
 	if err := c.Bind(&req); err != nil {

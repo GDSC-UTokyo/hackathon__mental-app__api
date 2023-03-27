@@ -2,6 +2,7 @@ package controller
 
 import (
 	"cmd/app/model"
+	"cmd/app/utils"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -13,7 +14,7 @@ type DeleteReasonRes struct {
 
 func DeleteReason(c *gin.Context) {
 	reasonId := c.Param("reasonId")
-	userId := c.Request.Header.Get("UserId")
+	userId := utils.GetValueFromContext(c, "userId")
 
 	originalReason := model.Reason{}
 	if err := originalReason.GetReasonByReasonId(reasonId).Error; err != nil {

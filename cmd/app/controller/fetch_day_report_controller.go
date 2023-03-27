@@ -2,6 +2,7 @@ package controller
 
 import (
 	"cmd/app/model"
+	"cmd/app/utils"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -16,7 +17,7 @@ type FetchDayReportRes struct {
 
 func FetchDayReport(c *gin.Context) {
 	mentalPointId := c.Param("mentalPointId")
-	userId := c.Request.Header.Get("UserId")
+	userId := utils.GetValueFromContext(c, "userId")
 
 	targetReport := model.MentalPoint{}
 	if err := targetReport.GetReportByMentalPointId(mentalPointId).Error; err != nil {

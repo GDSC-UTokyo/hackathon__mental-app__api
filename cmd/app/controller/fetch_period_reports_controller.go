@@ -2,6 +2,7 @@ package controller
 
 import (
 	"cmd/app/model"
+	"cmd/app/utils"
 	"net/http"
 	"time"
 
@@ -23,7 +24,7 @@ type FetchEachDayReport struct {
 type FetchPeriodReportsRes []FetchEachDayReport
 
 func FetchPeriodReports(c *gin.Context) {
-	userId := c.Request.Header.Get("UserId")
+	userId := utils.GetValueFromContext(c, "userId")
 
 	req := new(FetchPeriodReportsReq)
 	if err := c.Bind(&req); err != nil {
