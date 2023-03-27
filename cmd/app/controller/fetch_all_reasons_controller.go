@@ -2,6 +2,7 @@ package controller
 
 import (
 	"cmd/app/model"
+	"cmd/app/utils"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -13,7 +14,7 @@ type FetchAllReasonsRes struct {
 }
 
 func FetchAllReasons(c *gin.Context) {
-	userId := c.Request.Header.Get("UserId")
+	userId := utils.GetValueFromContext(c, "userId")
 
 	targetReasons := model.Reasons{}
 	if err := targetReasons.GetReasonsByUserId(userId).Error; err != nil {

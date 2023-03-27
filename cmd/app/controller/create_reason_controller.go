@@ -17,7 +17,7 @@ type CreateReasonRes struct {
 }
 
 func CreateReason(c *gin.Context) {
-	userId := c.Request.Header.Get("UserId")
+	userId := utils.GetValueFromContext(c, "userId")
 
 	req := new(CreateReasonReq)
 	if err := c.Bind(&req); err != nil {

@@ -1,6 +1,8 @@
 package main
 
-import "cmd/app/router"
+import (
+	"cmd/app/router"
+)
 
 func main() {
 	router.Router()
