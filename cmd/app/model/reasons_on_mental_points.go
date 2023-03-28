@@ -43,5 +43,5 @@ func DeleteReportsByPointIdAndReasonId(mentalPointId string, reasonIdList []stri
 }
 
 func DeleteReportsByReasonId(reasonId string) (tx *gorm.DB) {
-	return db.Where("reason_id", reasonId).Delete(&ROMPs{})
+	return db.Where("reason_id = ?", reasonId).Delete(&ROMPs{})
 }
