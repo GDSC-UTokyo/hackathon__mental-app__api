@@ -38,10 +38,10 @@ func (p *ReasonsOnMentalPoints) UpdateReasonsOnMentalPoint() (tx *gorm.DB) {
 	return db.Model(&p).Update("reason_id", p.ReasonId)
 }
 
-func DeleteReportsByPointIdAndReasonId(mentalPointId string, reasonIdList []string) (tx *gorm.DB) {
-	return db.Where("mental_point_id", mentalPointId).Where("reason_id IN (?)", reasonIdList).Delete(&ReasonsOnMentalPoints{})
+func (p *ROMPs) DeleteReportsByPointIdAndReasonId(mentalPointId string, reasonIdList []string) (tx *gorm.DB) {
+	return db.Where("mental_point_id = ?", mentalPointId).Where("reason_id IN (?)", reasonIdList).Unscoped().Delete(&p)
 }
 
-func DeleteReportsByReasonId(reasonId string) (tx *gorm.DB) {
-	return db.Where("reason_id = ?", reasonId).Delete(&ROMPs{})
+func (p *ROMPs) DeleteReportsByReasonId(reasonId string) (tx *gorm.DB) {
+	return db.Where("reason_id = ?", reasonId).Unscoped().Delete(&p)
 }
