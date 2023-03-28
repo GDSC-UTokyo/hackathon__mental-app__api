@@ -16,20 +16,10 @@ func Router() {
 			"*",
 		},
 		AllowMethods: []string{
-			"GET",
-			"POST",
-			"PUT",
-			"DELETE",
+			"*",
 		},
 		AllowHeaders: []string{
-			"Access-Control-Allow-Headers",
-			"Content-Type",
-			"Content-Length",
-			"Accept-Encoding",
-			"X-CSRF-Token",
-			"Authorization",
-			"authentication",
-			"workspace_id",
+			"*",
 		},
 	}
 	g.Use(cors.New(corsConfig))
@@ -41,10 +31,10 @@ func Router() {
 	g.PUT("/reasons/:reasonId", controller.UpdateReason)
 	g.DELETE("/reasons/:reasonId", controller.DeleteReason)
 
-	g.POST("/reports", controller.CreateReport)
+	//g.POST("/reports", controller.CreateReport)
 	g.PUT("/reports/:mentalPointId", controller.UpdateReport)
 	g.GET("/reports/:mentalPointId", controller.FetchDayReport)
-	g.POST("/reports/graphs", controller.FetchPeriodReports)
+	g.POST("/reports", controller.FetchPeriodReports)
 
 	g.Run(":8080")
 }

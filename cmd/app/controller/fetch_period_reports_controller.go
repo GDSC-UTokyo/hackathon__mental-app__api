@@ -16,9 +16,10 @@ type FetchPeriodReportsReq struct {
 }
 
 type FetchEachDayReport struct {
-	Id    string `json:"mentalPointId"`
-	Date  string `json:"createDate"`
-	Point int    `json:"point"`
+	Id      string   `json:"mentalPointId"`
+	Date    string   `json:"createDate"`
+	Point   int      `json:"point"`
+	Reasons []string `json:"reasonIdList"`
 }
 
 type FetchPeriodReportsRes []FetchEachDayReport
@@ -62,10 +63,17 @@ func FetchPeriodReports(c *gin.Context) {
 	}
 
 	for i := 0; i < len(targetReports); i++ {
+		targetReasons := make(model.ReasonIdList, 0)
+		if err := targetReasons.GetReasonIdsByMentalPointId(targetReports[i].Id).Error; err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+			return
+		}
+
 		res = append(res, FetchEachDayReport{
 			targetReports[i].Id,
 			targetReports[i].CreatedDate,
 			targetReports[i].Point,
+			targetReasons,
 		})
 	}
 
