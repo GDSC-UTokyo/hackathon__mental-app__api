@@ -59,7 +59,7 @@ func UpdateReport(c *gin.Context) {
 	}
 
 	targetROMPs := model.ROMPs{}
-	if err := targetROMPs.DeleteReportsByPointIdAndReasonId(mentalPointId, req.Reasons).Error; err != nil {
+	if err := targetROMPs.DeleteReportsByPointId(mentalPointId).Error; err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"message": "report not found"})
 		return
 	}
