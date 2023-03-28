@@ -37,6 +37,11 @@ func DeleteReason(c *gin.Context) {
 		return
 	}
 
+	if err := model.DeleteReportsByReasonId(reasonId).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
 	res := &DeleteReasonRes{
 		Message: "reason successfully deleted",
 	}
