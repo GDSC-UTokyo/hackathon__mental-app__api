@@ -31,10 +31,10 @@ func Router() {
 	g.PUT("/reasons/:reasonId", controller.UpdateReason)
 	g.DELETE("/reasons/:reasonId", controller.DeleteReason)
 
-	//g.POST("/reports", controller.CreateReport)
+	g.POST("/reports", controller.CreateReport)
 	g.PUT("/reports/:mentalPointId", controller.UpdateReport)
 	g.GET("/reports/:mentalPointId", controller.FetchDayReport)
-	g.POST("/reports", controller.FetchPeriodReports)
+	g.POST("/reports/graphs", controller.FetchPeriodReports)
 
 	g.Run(":8080")
 }
